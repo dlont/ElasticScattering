@@ -34,7 +34,7 @@
 
 #include <cstdio>
 
-#define NPARAMS 20
+#define NPARAMS 17
 
 #include "SigDig.cxx"
 
@@ -354,6 +354,7 @@ void Fit() {
 
 
     const Double_t Pi = TMath::Pi();
+    //--------------------- Secondary reggeons ---------------------------//
     ///////////////////////////////////////linear trajectory parameters
     const Double_t a_w = 0.;
     const Double_t b_w = 0.;
@@ -364,54 +365,42 @@ void Fit() {
     const Double_t b_f = 0.;
     const Double_t alpha_f0 = 0.; //f Regge tr. intercept
     const Double_t alpha_f = 0.; //f Regge tr. slope
-    //Barger Phillips
-    //const Double_t a_p = 17963.;			
-    //const Double_t b_p = 10.2097;			
-    //const Double_t c_p = 77.3003;			
-    //const Double_t d_p = 0.0508336;		
-    //const Double_t phi1_p = 1.60039;		
-    //const Double_t phi2_p = -1.01501;		
-    ////CREMEA FIT PPbar chi2/ndf=1.95	(0.35%TOTEM err)
-    const Double_t a = 13.1269;
-    const Double_t b1 = 1.38992;
-    const Double_t b2 = 0.; //attention: for pure linear pomeron trajectory
-    //const Double_t b2 	= 0.01;		//attention: for linear + sqrt brake trajectory
-    const Double_t c = 3628.43;
-    const Double_t d1 = 9.41059;
-    const Double_t d2 = 0.; //attention: for pure linear pomeron trajectory
-    //const Double_t d2 	= 0.01;		//attention: for linear + sqrt brake trajectory
-    const Double_t eps1 = 0.;
-    const Double_t eps2 = 0.;
-    const Double_t phi = 2.82675;
 
-    const Double_t a_o = 1.0; //attention: S0r parameter 
-    const Double_t c_o = 0.0;
-    const Double_t phi2_o = 0.0;
+    //-------------------- Hard and soft pomerons ------------------------//
+    //-------------------------Hard pomeron ------------------------------//
+    const Double_t a_h = 13.1269;
+    const Double_t b_h = 1.38992;
+    const Double_t alpha_h0 = 1.;
+    const Double_t alpha_h1 = 0.;
+    //------------------------- Soft pomeron ------------------------//
+    const Double_t a_s = 13.1269;
+    const Double_t b_s = 1.38992;
+    const Double_t alpha_s0 = 1.;
+    const Double_t alpha_s1 = 0.;
 
-
-    //	Secondary reggeons
-    min->SetVariable(0, "a_w", a_w, 0.01);                  min->SetFixedVariable(0, "a_w", a_w);
-    min->SetVariable(1, "alpha_w0", alpha_w0, 0.01);        min->SetFixedVariable(1, "alpha_w0", alpha_w0);
-    min->SetVariable(2, "alpha_w", alpha_w, 0.01);          min->SetFixedVariable(2, "alpha_w", alpha_w);
-    min->SetVariable(3, "b_w", b_w, 0.01);                  min->SetFixedVariable(3, "b_w", b_w);
-    min->SetVariable(4, "a_f", a_f, 0.01);                  min->SetFixedVariable(4, "a_f", a_f);
-    min->SetVariable(5, "alpha_f0", alpha_f0, 0.01);        min->SetFixedVariable(5, "alpha_f0", alpha_f0);
-    min->SetVariable(6, "alpha_f", alpha_f, 0.01);          min->SetFixedVariable(6, "alpha_f", alpha_f);
-    min->SetVariable(7, "b_f", b_f, 0.01);                  min->SetFixedVariable(7, "b_f", b_f);
-    ////	Primary reggeons (Pomeron)
-    min->SetVariable(8, "\\sqrt A", a, 0.01);               //min->SetFixedVariable(8, "\\sqrt A",			a );
-    min->SetVariable(9, "B_1", b1, 0.01);                   //min->SetFixedVariable(9, "B_1",		b1 );
-    min->SetVariable(10, "B_2", b2, 0.01);                  min->SetFixedVariable(10, "B_2", b2);
-    min->SetVariable(11, "\\sqrt C", c, 0.01);              //min->SetFixedVariable(11, "\\sqrt C",		c);
-    min->SetVariable(12, "D_1", d1, 0.01);                  //min->SetFixedVariable(12, "D_1", 		d1 );
-    min->SetVariable(13, "D_2", d2, 0.01);                  min->SetFixedVariable(13, "D_2", d2);
-    min->SetVariable(14, "\\varepsilon_1", eps1, 0.01);     min->SetFixedVariable(14, "\\varepsilon_1", eps1);
-    min->SetVariable(15, "\\varepsilon_2", eps2, 0.01);     min->SetFixedVariable(15, "\\varepsilon_2", eps2);
-    min->SetVariable(16, "\\varphi", 2.7, 0.01);            //min->SetFixedVariable(16, "\\varphi",	phi );
+    const Double_t s_r0 = 1.;
     
-    min->SetVariable(17, "a_o", a_o, 0.01);                 min->SetFixedVariable(17, "a_o", a_o);
-    min->SetVariable(18, "c_o", c_o, 0.01);                 min->SetFixedVariable(18, "c_o", c_o);
-    min->SetVariable(19, "phi2_o", phi2_o, 0.01);           min->SetFixedVariable(19, "phi2_o", phi2_o);
+    //	Secondary reggeons
+    min->SetVariable(0, "a_w", a_w, 0.01);                    //min->SetFixedVariable(0, "a_w", a_w);
+    min->SetVariable(1, "alpha_w0", alpha_w0, 0.01);          //min->SetFixedVariable(1, "alpha_w0", alpha_w0);
+    min->SetVariable(2, "alpha_w", alpha_w, 0.01);            //min->SetFixedVariable(2, "alpha_w", alpha_w);
+    min->SetVariable(3, "b_w", b_w, 0.01);                    //min->SetFixedVariable(3, "b_w", b_w);
+    min->SetVariable(4, "a_f", a_f, 0.01);                    //min->SetFixedVariable(4, "a_f", a_f);
+    min->SetVariable(5, "alpha_f0", alpha_f0, 0.01);          //min->SetFixedVariable(5, "alpha_f0", alpha_f0);
+    min->SetVariable(6, "alpha_f", alpha_f, 0.01);            //min->SetFixedVariable(6, "alpha_f", alpha_f);
+    min->SetVariable(7, "b_f", b_f, 0.01);                    //min->SetFixedVariable(7, "b_f", b_f);
+    ////	Primary reggeons (Pomeron)    
+    min->SetVariable(8, "a^(h)", a_h, 0.01);                  //min->SetFixedVariable(8, "a^(h)", a_h );
+    min->SetVariable(9, "b^(h)", b_h, 0.01);                  //min->SetFixedVariable(9, "b^(h)", b_h );
+    min->SetVariable(10, "\\alpha^(h)_0", alpha_h0, 0.01);    min->SetFixedVariable(10, "\\alpha^(h)_0", alpha_h0);
+    min->SetVariable(11, "\\alpha^(h)_1", alpha_h1, 0.01);    min->SetFixedVariable(11, "\\alpha^(h)_1", alpha_h1);
+        
+    min->SetVariable(12, "a^(s)", a_s, 0.01);                 //min->SetFixedVariable(12, "a^(s)", a_s);
+    min->SetVariable(13, "b^(s)", b_s, 0.01);                 //min->SetFixedVariable(13, "b^(s)", b_s);
+    min->SetVariable(14, "\\alpha^(s)_0", alpha_s0, 0.01);    min->SetFixedVariable(14, "\\alpha^(s)_0", alpha_s0);
+    min->SetVariable(15, "\\alpha^(s)_1", alpha_s1, 0.01);    min->SetFixedVariable(15, "\\alpha^(s)_1", alpha_s1);
+        
+    min->SetVariable(16, "s_{r0}", s_r0, 0.01);               min->SetFixedVariable(16, "s_{r0}", s_r0 );
 
     min->Minimize();
 
