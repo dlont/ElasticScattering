@@ -1,4 +1,8 @@
-
+/**
+ * @File Fit.cpp
+ * 
+ * @author Denys Lontkovskyi
+ */
 #include "code/Chi2Object.h"
 
 #include "TROOT.h"
