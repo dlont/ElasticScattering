@@ -17,7 +17,7 @@ void run()
 
 	gSystem->Load("code/datasetPPdsdt_cpp.dll");
 
-	gSystem->Load("code/chi2object_cpp.dll");
+	gSystem->Load("code/chi2Object_cpp.dll");
 
 
 	gSystem->CompileMacro("Fit.cpp");
