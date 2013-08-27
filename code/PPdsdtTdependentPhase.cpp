@@ -41,8 +41,8 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
     Double_t s = _s;
     //
     const Double_t t = -x[ 0];
-    const Double_t s_0r = par[ 17];
-    const Double_t L = TMath::Log(s / s_0r);
+    const Double_t s_r0 = par[ 16 ];
+    const Double_t L = TMath::Log(s / s_r0);
     //
     Double_t termA_w = 0.;
     Double_t termA_f = 0.;
@@ -60,32 +60,29 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
     Double_t b_f = par[ 7 ];
     Double_t alpha_f0 = par[ 5 ]; //f Regge tr. intercept
     Double_t alpha_f = par[ 6 ]; //f Regge tr. slope
-    //Pomeron parametes
-    Double_t a = par[ 8 ];
-    Double_t b1 = par[ 9 ];
-    Double_t b2 = par[ 10];
-    Double_t c = par[ 11];
-    Double_t d1 = par[ 12];
-    Double_t d2 = par[ 13];
-    Double_t eps1 = par[ 14];
-    Double_t eps2 = par[ 15];
-    Double_t phi = par[ 16];
-
-    Double_t a_o = par[ 17];
-    Double_t c_o = par[ 18];
-    Double_t phi2_o = par[ 19];
+    /*------------------------------- Pomeron parameters ---------------------*/
+    // Hard pomeron parametes
+    Double_t a_h = par[ 8 ];
+    Double_t b_h = par[ 9 ];
+    Double_t alpha_h0 = par[ 10];
+    Double_t alpha_h1 = par[ 11];
+    
+    // Soft pomeron parametes
+    Double_t a_s = par[ 12 ];
+    Double_t b_s = par[ 13 ];
+    Double_t alpha_s0 = par[ 14];
+    Double_t alpha_s1 = par[ 15];
 
     //Calculating BP pomeron
     TComplex A;
-    Double_t A1 = a;
-    Double_t C1 = c;
-    Double_t b = b1;
-    Double_t d = d1;
 
-    TComplex exp_term1(b * t / 2., 0.);
-    TComplex exp_term2(d * t / 2., phi);
+    TComplex exp_term_h(b_h + L, -Pi/2.);
+    TComplex exp_term_s(b_s + L, -Pi/2.);
+    
+    TComplex alpha_h(alpha_h0 + alpha_h1*t, 0.);
+    TComplex alpha_s(alpha_s0 + alpha_s1*t, 0.);
 
-    A = A1 * TComplex::Exp(exp_term1) + C1 * TComplex::Exp(exp_term2);
+    A = a_h * TComplex::Exp(exp_term_h * alpha_h) + a_s * TComplex::Exp(exp_term_s * alpha_s);
 
     Double_t Im = A.Im();
     Double_t Re = A.Re();
