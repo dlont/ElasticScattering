@@ -5,6 +5,7 @@ void compile()
         gSystem->CompileMacro("functor.cpp", "++");
         gSystem->CompileMacro("barppdsdt.cpp", "++");
         gSystem->CompileMacro("ppdsdt.cpp", "++");
+        gSystem->CompileMacro("PPdsdtTdependentPhase", "++");
 
         gSystem->CompileMacro("dataset.cpp", "++");
         gSystem->CompileMacro("compositedataset.cpp", "++");
