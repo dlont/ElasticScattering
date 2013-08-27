@@ -22,7 +22,6 @@ _ppdsdtGraph(0),
 _ppdsdtModel(0),
 _condition(0),
 _s(-1.) {
-    _ppdsdtModel = new PPdsdt();
 }
 
 DatasetPPdsdt::DatasetPPdsdt( double sqrtS ) :
@@ -31,8 +30,7 @@ _ppdsdtGraph(0),
 _ppdsdtModel(0),
 _condition(0),
 _s(sqrtS) {
-    _ppdsdtModel = new PPdsdt();
-    setSqrtS( sqrtS );
+    _s = sqrtS;
 }
 
 DatasetPPdsdt::DatasetPPdsdt( const std::string& name, double sqrtS ) :
@@ -41,8 +39,7 @@ _ppdsdtGraph(0),
 _ppdsdtModel(0),
 _condition(0),
 _s(sqrtS) {
-    _ppdsdtModel = new PPdsdt();
-    setSqrtS( sqrtS );
+    _s = sqrtS;
 }
 
 DatasetPPdsdt::~DatasetPPdsdt() {
