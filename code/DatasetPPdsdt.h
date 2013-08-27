@@ -43,6 +43,9 @@ public:
     /** Get dataset graph object */
     TGraph* getGraph() const;
     
+    /** Set single differential cross section formula */
+    void setModel(Functor* _ppdsdtModel);
+    
     /** Get model object */
     Functor* getModel() const;
     

@@ -94,6 +94,14 @@ TGraph* DatasetPPdsdt::getGraph() const {
 }
 
 /**
+ * Set model describing this dataset
+ * @param model
+ */
+void DatasetPPdsdt::setModel(Functor* model) {
+    this->_ppdsdtModel = model;
+}
+
+/**
  * Get model object
  * @return model's functor
  */
