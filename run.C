@@ -10,6 +10,7 @@ void run()
 	gSystem->Load("code/functor_cpp.dll");
 	gSystem->Load("code/ppdsdt_cpp.dll");
 	gSystem->Load("code/barppdsdt_cpp.dll");
+        gSystem->Load("code/PPdsdtTdependentPhase_cpp.dll");
 
 	gSystem->Load("code/Condition_cpp.dll");
 	gSystem->Load("code/CompositeCondition_cpp.dll");
