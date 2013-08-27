@@ -14,7 +14,7 @@ class PPdsdtTdependentPhase : public Functor {
 public:
     PPdsdtTdependentPhase();
 
-    PPdsdtTdependentPhase(const PPdsdtTdependentPhase& orig);
+    explicit PPdsdtTdependentPhase(double);
 
     virtual ~PPdsdtTdependentPhase();
 
