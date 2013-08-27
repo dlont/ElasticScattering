@@ -17,7 +17,6 @@ PPdsdtTdependentPhase::PPdsdtTdependentPhase() :
 Functor(),
 _s(-1.)
 {
-
 }
 
 PPdsdtTdependentPhase::PPdsdtTdependentPhase( double s ) :
@@ -73,7 +72,7 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
     Double_t alpha_s0 = par[ 14];
     Double_t alpha_s1 = par[ 15];
 
-    //Calculating BP pomeron
+    // Calculating amplitudes
     TComplex A;
 
     TComplex exp_term_h(b_h + L, -Pi/2.);
