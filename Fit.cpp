@@ -43,6 +43,7 @@
 #include "code/PPdsdt.h"
 #include "code/TRangeCondition.h"
 #include "code/Barppdsdt.h"
+#include "code/PPdsdtTdependentPhase.h"
 
 //////////////////////////////////////////GLOBAL VARIABLES///////////////////////////////////////////////
 //	Path input file with hadrons CSs
@@ -52,14 +53,10 @@ const char *Tfile_name1 = "pp_total_root_toterr.txt";
 //	Differential cross sections
 const char *Dfile_name1 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\BPv003\\PP_ds_dt23_5.txt"; //
 const char *Dfile_name2 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\BPv003\\PP_ds_dt30_7.txt"; //
-//const char *Dfile_name3 = "PP_ds_dt53_0.txt"; //
-const char *Dfile_name3 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\BPv003\\PP_ds_dt53_0(2).txt"; //
-//const char *Dfile_name3 = "PP_ds_dt52_8.txt";
-const char *Dfile_name4 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\BPv003\\PP_ds_dt62_5.txt"; //
-//const char *Dfile_name5 = "PP_ds_dt27_4.txt";
-//const char *Dfile_name5 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\BPv003\\pp_totem_data_Tamasz.txt";
-const char *Dfile_name5 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\DATA_TOTEM\\pp_official_totem_data_7TeV.txt";
-const char *Dfile_name6 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\BPv003\\PP_ds_dt44_699.txt"; //
+const char *Dfile_name3 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\BPv003\\PP_ds_dt44_699.txt"; //
+const char *Dfile_name4 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\BPv003\\PP_ds_dt53_0(2).txt"; //
+const char *Dfile_name5 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\BPv003\\PP_ds_dt62_5.txt";
+const char *Dfile_name6 = "D:\\CDF\\Theory_task\\Minisation_pp_CS_BARGER_PHILLIPS\\FIT\\DATA_TOTEM\\pp_official_totem_data_7TeV.txt"; //
 
 const char *_Dfile_name1 = "D:\\CDF\\Theory_task\\Minisation_pp_CS\\DATA\\LengyelData\\ds_dt\\barPP_ds_dt31.txt"; //
 const char *_Dfile_name2 = "D:\\CDF\\Theory_task\\Minisation_pp_CS\\DATA\\LengyelData\\ds_dt\\barPP_ds_dt53.txt"; //
@@ -276,28 +273,38 @@ void Fit() {
     theCanvasD_ -> Modified();
     theCanvasD_ -> Update();
 
-    TRangeCondition* condTinRange = new TRangeCondition("ConditionTinRange0.1-8", 0.1, 8.);
+    TRangeCondition* condTinRange = new TRangeCondition("ConditionTinRange0.1-8", 0.5, 6.);
 //    condTinRange->print();
 
-    DatasetPPdsdt* ppdsdt23 = new DatasetPPdsdt( "dsdtPP23GeV", 23.503*23.503 );
+    double s = 23.503*23.503;
+    DatasetPPdsdt* ppdsdt23 = new DatasetPPdsdt( "dsdtPP23GeV", s );
+    ppdsdt23->setModel( new PPdsdtTdependentPhase(s) );
     ppdsdt23->setGraph( Dgr1 );
     ppdsdt23->setCondition( condTinRange );
     
-    DatasetPPdsdt* ppdsdt30 = new DatasetPPdsdt( "dsdtPP30GeV", 30.7*30.7 );
+    s = 30.7*30.7;
+    DatasetPPdsdt* ppdsdt30 = new DatasetPPdsdt( "dsdtPP30GeV", s );
+    ppdsdt30->setModel( new PPdsdtTdependentPhase(s) );
     ppdsdt30->setGraph( Dgr2 );
     ppdsdt30->setCondition( condTinRange );
     
-    DatasetPPdsdt* ppdsdt53 = new DatasetPPdsdt( "dsdtPP53GeV", 53.0*53.0 );
-    ppdsdt53->setGraph( Dgr3 );
+    s = 44.699*44.699;
+    DatasetPPdsdt* ppdsdt44 = new DatasetPPdsdt( "dsdtPP44GeV", 44.699*44.699 );
+    ppdsdt44->setModel( new PPdsdtTdependentPhase(s) );
+    ppdsdt44->setGraph( Dgr3 );
+    ppdsdt44->setCondition( condTinRange );
+  
+    s = 53.0*53.0;
+    DatasetPPdsdt* ppdsdt53 = new DatasetPPdsdt( "dsdtPP53GeV", s );
+    ppdsdt53->setModel( new PPdsdtTdependentPhase(s) );
+    ppdsdt53->setGraph( Dgr4 );
     ppdsdt53->setCondition( condTinRange );
     
-    DatasetPPdsdt* ppdsdt62 = new DatasetPPdsdt( "dsdtPP63GeV", 62.5*62.5 );
-    ppdsdt62->setGraph( Dgr4 );
+    s = 62.5*62.5;
+    DatasetPPdsdt* ppdsdt62 = new DatasetPPdsdt( "dsdtPP63GeV", s );
+    ppdsdt62->setModel( new PPdsdtTdependentPhase(s) );
+    ppdsdt62->setGraph( Dgr5 );
     ppdsdt62->setCondition( condTinRange );
-    
-    DatasetPPdsdt* ppdsdt44 = new DatasetPPdsdt( "dsdtPP44GeV", 44.699*44.699 );
-    ppdsdt44->setGraph( Dgr6 );
-    ppdsdt44->setCondition( condTinRange );
     
     CompositeDataset* dataset_dsdtPP = new CompositeDataset( "dsdtPPcombined" );
     dataset_dsdtPP->getComposite()->addDataset( ppdsdt23 );
@@ -368,39 +375,41 @@ void Fit() {
 
     //-------------------- Hard and soft pomerons ------------------------//
     //-------------------------Hard pomeron ------------------------------//
-    const Double_t a_h = 13.1269;
-    const Double_t b_h = 1.38992;
-    const Double_t alpha_h0 = 1.;
-    const Double_t alpha_h1 = 0.;
+    const Double_t a_h = 0.68;
+    const Double_t b_h = -1.77;
+    const Double_t alpha_h0 = 0.653069;
+    const Double_t alpha_h1 = 0.153269;
     //------------------------- Soft pomeron ------------------------//
-    const Double_t a_s = 13.1269;
-    const Double_t b_s = 1.38992;
-    const Double_t alpha_s0 = 1.;
-    const Double_t alpha_s1 = 0.;
+    const Double_t a_s = -3.784E-5;
+    const Double_t b_s = 12.03;
+    const Double_t alpha_s0 = 1.00194;
+    const Double_t alpha_s1 = 0.256852;
 
     const Double_t s_r0 = 1.;
+    const Double_t t0   = 1.;
     
     //	Secondary reggeons
-    min->SetVariable(0, "a_w", a_w, 0.01);                    //min->SetFixedVariable(0, "a_w", a_w);
-    min->SetVariable(1, "alpha_w0", alpha_w0, 0.01);          //min->SetFixedVariable(1, "alpha_w0", alpha_w0);
-    min->SetVariable(2, "alpha_w", alpha_w, 0.01);            //min->SetFixedVariable(2, "alpha_w", alpha_w);
-    min->SetVariable(3, "b_w", b_w, 0.01);                    //min->SetFixedVariable(3, "b_w", b_w);
-    min->SetVariable(4, "a_f", a_f, 0.01);                    //min->SetFixedVariable(4, "a_f", a_f);
-    min->SetVariable(5, "alpha_f0", alpha_f0, 0.01);          //min->SetFixedVariable(5, "alpha_f0", alpha_f0);
-    min->SetVariable(6, "alpha_f", alpha_f, 0.01);            //min->SetFixedVariable(6, "alpha_f", alpha_f);
-    min->SetVariable(7, "b_f", b_f, 0.01);                    //min->SetFixedVariable(7, "b_f", b_f);
+    min->SetVariable(0, "a_w", a_w, 0.01);                    min->SetFixedVariable(0, "a_w", a_w);
+    min->SetVariable(1, "alpha_w0", alpha_w0, 0.01);          min->SetFixedVariable(1, "alpha_w0", alpha_w0);
+    min->SetVariable(2, "alpha_w", alpha_w, 0.01);            min->SetFixedVariable(2, "alpha_w", alpha_w);
+    min->SetVariable(3, "b_w", b_w, 0.01);                    min->SetFixedVariable(3, "b_w", b_w);
+    min->SetVariable(4, "a_f", a_f, 0.01);                    min->SetFixedVariable(4, "a_f", a_f);
+    min->SetVariable(5, "alpha_f0", alpha_f0, 0.01);          min->SetFixedVariable(5, "alpha_f0", alpha_f0);
+    min->SetVariable(6, "alpha_f", alpha_f, 0.01);            min->SetFixedVariable(6, "alpha_f", alpha_f);
+    min->SetVariable(7, "b_f", b_f, 0.01);                    min->SetFixedVariable(7, "b_f", b_f);
     ////	Primary reggeons (Pomeron)    
-    min->SetVariable(8, "a^(h)", a_h, 0.01);                  //min->SetFixedVariable(8, "a^(h)", a_h );
+    min->SetVariable(8, "a^(h)", a_h, 0.01);                  min->SetFixedVariable(8, "a^(h)", a_h );
     min->SetVariable(9, "b^(h)", b_h, 0.01);                  //min->SetFixedVariable(9, "b^(h)", b_h );
-    min->SetVariable(10, "\\alpha^(h)_0", alpha_h0, 0.01);    min->SetFixedVariable(10, "\\alpha^(h)_0", alpha_h0);
-    min->SetVariable(11, "\\alpha^(h)_1", alpha_h1, 0.01);    min->SetFixedVariable(11, "\\alpha^(h)_1", alpha_h1);
+    min->SetVariable(10, "\\alpha^(h)_0", alpha_h0, 0.01);    //min->SetFixedVariable(10, "\\alpha^(h)_0", alpha_h0);
+    min->SetVariable(11, "\\alpha^(h)_1", alpha_h1, 0.01);    //min->SetFixedVariable(11, "\\alpha^(h)_1", alpha_h1);
         
-    min->SetVariable(12, "a^(s)", a_s, 0.01);                 //min->SetFixedVariable(12, "a^(s)", a_s);
-    min->SetVariable(13, "b^(s)", b_s, 0.01);                 //min->SetFixedVariable(13, "b^(s)", b_s);
-    min->SetVariable(14, "\\alpha^(s)_0", alpha_s0, 0.01);    min->SetFixedVariable(14, "\\alpha^(s)_0", alpha_s0);
-    min->SetVariable(15, "\\alpha^(s)_1", alpha_s1, 0.01);    min->SetFixedVariable(15, "\\alpha^(s)_1", alpha_s1);
+    min->SetVariable(12, "a^(s)", a_s, 0.01);                 min->SetFixedVariable(12, "a^(s)", a_s);
+    min->SetVariable(13, "b^(s)", b_s, 0.01);                 min->SetFixedVariable(13, "b^(s)", b_s);
+    min->SetVariable(14, "\\alpha^(s)_0", alpha_s0, 0.01);    //min->SetFixedVariable(14, "\\alpha^(s)_0", alpha_s0);
+    min->SetVariable(15, "\\alpha^(s)_1", alpha_s1, 0.01);    //min->SetFixedVariable(15, "\\alpha^(s)_1", alpha_s1);
         
     min->SetVariable(16, "s_{r0}", s_r0, 0.01);               min->SetFixedVariable(16, "s_{r0}", s_r0 );
+//    min->SetVariable(17, "t_0", t0, 0.01);                    min->SetFixedVariable(17, "t_0", t0 );
 
     min->Minimize();
 
@@ -426,8 +435,8 @@ void Fit() {
     Dfunction1 -> SetParameters(par);
     SetUpFunc(Dfunction1, color);
     Dfunction1 -> Draw("same");
-    //cout.precision(10); cout << "diff: " << Dfunction1->Eval(10) << endl;
     PutEnergy(3., 1.e-2, 23.5);
+    //cout.precision(10); cout << "diff: " << Dfunction1->Eval(10) << endl;
 
     theCanvasD -> cd(2);
     Functor* f30 = ppdsdt30->getModel();
@@ -438,36 +447,36 @@ void Fit() {
     PutEnergy(3., 1.e-2, 31.);
 
     theCanvasD -> cd(3);
-    Functor* f53 = ppdsdt53->getModel();
-    TF1* Dfunction3 = new TF1("Dfunction3", f53, 0., 10., NPARAMS);
+    Functor* f44 = ppdsdt44->getModel();
+    TF1* Dfunction3 = new TF1("Dfunction3", f44, 0., 10., NPARAMS);
     Dfunction3 -> SetParameters(par);
     SetUpFunc(Dfunction3, color);
     Dfunction3 -> Draw("same");
-    PutEnergy(2., 1.e-2, 53.);
+    PutEnergy(2., 1.e-2, 45.);
 
     theCanvasD -> cd(4);
-    Functor* f62 = ppdsdt62->getModel();
-    TF1* Dfunction4 = new TF1("Dfunction4", f62, 0., 7., NPARAMS);
+    Functor* f53 = ppdsdt53->getModel();
+    TF1* Dfunction4 = new TF1("Dfunction4", f53, 0., 7., NPARAMS);
     Dfunction4 -> SetParameters(par);
     SetUpFunc(Dfunction4, color);
     Dfunction4 -> Draw("same");
-    PutEnergy(3., 1.e-2, 62.5);
+    PutEnergy(3., 1.e-2, 53.);
 
     theCanvasD -> cd(5);
-//    TF1* Dfunction5 = new TF1("Dfunction5", GRAPHFunctionPPCS_dt, 0., 7., NPARAMS + 1);
-//    Dfunction5 -> SetParameters(par);
-//    SetUpFunc(Dfunction5, color);
-//    Dfunction5 -> Draw("same");
-//    PutEnergy(1.5, 1.e-2, 7000.);
+    Functor* f62 = ppdsdt62->getModel();
+    TF1* Dfunction5 = new TF1("Dfunction5", f62, 0., 7., NPARAMS);
+    Dfunction5 -> SetParameters(par);
+    SetUpFunc(Dfunction5, color);
+    Dfunction5 -> Draw("same");
+    PutEnergy(3., 1.e-2, 62.5);
 
     theCanvasD -> cd(6);
-    Functor* f44 = ppdsdt44->getModel();
-    TF1* Dfunction6 = new TF1("Dfunction6", f44, 0., 7., NPARAMS);
-    Dfunction6 -> SetParameters(par);
-    SetUpFunc(Dfunction6, color);
-    Dfunction6 -> Draw("same");
-    PutEnergy(4., 1.e-2, 45.);
-
+//    TF1* Dfunction5 = new TF1("Dfunction6", GRAPHFunctionPPCS_dt, 0., 7., NPARAMS + 1);
+//    Dfunction6 -> SetParameters(par);
+//    SetUpFunc(Dfunction6, color);
+//    Dfunction6 -> Draw("same");
+//    PutEnergy(1.5, 1.e-2, 7000.);
+    
     ////////////////////////////////////////////DIFFERENTIAL BAR PP////////////////////////////////////
     theCanvasD_ -> cd(1);
     Functor* f31ppb = new BarPPdsdt(31. * 31.);
@@ -522,7 +531,7 @@ void Fit() {
     theCanvasTOTEM -> cd();
     theCanvasTOTEM -> SetLeftMargin(0.2);
     theCanvasTOTEM -> SetLogy(kTRUE);
-    SetUpDiffXSGraph(Dgr5);
+    SetUpDiffXSGraph(Dgr6);
 //    Dfunction5 ->SetLineWidth(3);
 //    Dfunction5 -> Draw("same");
     PutEnergy(4., 1.e-2, 7000);

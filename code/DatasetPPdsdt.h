@@ -44,7 +44,7 @@ public:
     TGraph* getGraph() const;
     
     /** Set single differential cross section formula */
-    void setModel(Functor* _ppdsdtModel);
+    void setModel( Functor* _ppdsdtModel);
     
     /** Get model object */
     Functor* getModel() const;
