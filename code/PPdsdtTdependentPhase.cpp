@@ -71,12 +71,18 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
     Double_t b_s = par[ 13 ];
     Double_t alpha_s0 = par[ 14];
     Double_t alpha_s1 = par[ 15];
+    
+    // Energy slope 
+    Double_t k_h = par[ 17];
+    Double_t p_h = par[ 18];
+    Double_t k_s = par[ 19];
+    Double_t p_s = par[ 20];
 
     // Calculating amplitudes
     TComplex A;
 
-    TComplex exp_term_h(b_h + L, -Pi/2.);
-    TComplex exp_term_s(b_s + L, -Pi/2.);
+    TComplex exp_term_h(b_h + k_h*TMath::Power(L,p_h), 0.);
+    TComplex exp_term_s(b_s + k_s*TMath::Power(L,p_s), -Pi/2.);
     
     TComplex alpha_h(alpha_h0 + alpha_h1*t, 0.);
     TComplex alpha_s(alpha_s0 + alpha_s1*t, 0.);
@@ -89,7 +95,7 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
     Double_t Im2 = Im * Im;
     Double_t Re2 = Re * Re;
 
-    return ( (Pi / (s * s)) * (Re2 + Im2) * GEV2MB);
+    return ( (Pi / (s * s) ) * (Re2 + Im2) * GEV2MB);
 
 }
 

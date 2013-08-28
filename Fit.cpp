@@ -34,7 +34,7 @@
 
 #include <cstdio>
 
-#define NPARAMS 17
+#define NPARAMS 21
 
 #include "SigDig.cxx"
 
@@ -273,8 +273,10 @@ void Fit() {
     theCanvasD_ -> Modified();
     theCanvasD_ -> Update();
 
-    TRangeCondition* condTinRange = new TRangeCondition("ConditionTinRange0.1-8", 0.5, 6.);
+    TRangeCondition* condTinRange = new TRangeCondition("ConditionTinRange0.1-8", 0.1, 6.);
 //    condTinRange->print();
+    TRangeCondition* condTinRange1 = new TRangeCondition("ConditionTinRange0.1-8", 0.1, 5.5);
+//    condTinRange1->print();
 
     double s = 23.503*23.503;
     DatasetPPdsdt* ppdsdt23 = new DatasetPPdsdt( "dsdtPP23GeV", s );
@@ -289,7 +291,7 @@ void Fit() {
     ppdsdt30->setCondition( condTinRange );
     
     s = 44.699*44.699;
-    DatasetPPdsdt* ppdsdt44 = new DatasetPPdsdt( "dsdtPP44GeV", 44.699*44.699 );
+    DatasetPPdsdt* ppdsdt44 = new DatasetPPdsdt( "dsdtPP44GeV", s );
     ppdsdt44->setModel( new PPdsdtTdependentPhase(s) );
     ppdsdt44->setGraph( Dgr3 );
     ppdsdt44->setCondition( condTinRange );
@@ -304,7 +306,13 @@ void Fit() {
     DatasetPPdsdt* ppdsdt62 = new DatasetPPdsdt( "dsdtPP63GeV", s );
     ppdsdt62->setModel( new PPdsdtTdependentPhase(s) );
     ppdsdt62->setGraph( Dgr5 );
-    ppdsdt62->setCondition( condTinRange );
+    ppdsdt62->setCondition( condTinRange1 );
+    
+    s = 7000.*7000.;
+    DatasetPPdsdt* ppdsdt7000 = new DatasetPPdsdt( "dsdtPP7000GeV", s );
+    ppdsdt7000->setModel( new PPdsdtTdependentPhase(s) );
+    ppdsdt7000->setGraph( Dgr6 );
+    ppdsdt7000->setCondition( condTinRange );
     
     CompositeDataset* dataset_dsdtPP = new CompositeDataset( "dsdtPPcombined" );
     dataset_dsdtPP->getComposite()->addDataset( ppdsdt23 );
@@ -312,6 +320,7 @@ void Fit() {
     dataset_dsdtPP->getComposite()->addDataset( ppdsdt44 );
     dataset_dsdtPP->getComposite()->addDataset( ppdsdt53 );
     dataset_dsdtPP->getComposite()->addDataset( ppdsdt62 );
+    dataset_dsdtPP->getComposite()->addDataset( ppdsdt7000 );
 //    dataset_dsdtPP->print();
     
     Chi2Object chi2;
@@ -341,10 +350,10 @@ void Fit() {
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLSimAn", "" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiFit", "" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "ConjugatePR" );
-//    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "ConjugateFR" );
+    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "ConjugateFR" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "BFGS2" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "Minuit2", "Fumili2" );
-    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad");
+//    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad");
 
     min->SetPrintLevel(2);
     min->SetMaxFunctionCalls(1000000);
@@ -373,20 +382,39 @@ void Fit() {
     const Double_t alpha_f0 = 0.; //f Regge tr. intercept
     const Double_t alpha_f = 0.; //f Regge tr. slope
 
-    //-------------------- Hard and soft pomerons ------------------------//
+    //-------------------- Hard and soft pomerons single log ------------------------//
+    //-------------------------Hard pomeron ------------------------------//
+//    const Double_t a_h = 0.68;
+//    const Double_t b_h = -1.77;
+//    const Double_t alpha_h0 = 0.653069;
+//    const Double_t alpha_h1 = 0.153269;
+//    //------------------------- Soft pomeron ------------------------//
+//    const Double_t a_s = -3.784E-5;
+//    const Double_t b_s = 12.03;
+//    const Double_t alpha_s0 = 1.00194;
+//    const Double_t alpha_s1 = 0.256852;
+//
+//    const Double_t s_r0 = 1.;
+//    const Double_t k_h  = 1.;
+//    const Double_t k_s  = 1.;
+    //-------------------- Hard and soft pomerons no phase log ------------------------//
     //-------------------------Hard pomeron ------------------------------//
     const Double_t a_h = 0.68;
-    const Double_t b_h = -1.77;
-    const Double_t alpha_h0 = 0.653069;
-    const Double_t alpha_h1 = 0.153269;
+    const Double_t b_h = -2.01487;
+    const Double_t alpha_h0 = 1.60532;
+    const Double_t alpha_h1 = 0.844252;
     //------------------------- Soft pomeron ------------------------//
-    const Double_t a_s = -3.784E-5;
-    const Double_t b_s = 12.03;
-    const Double_t alpha_s0 = 1.00194;
-    const Double_t alpha_s1 = 0.256852;
+    const Double_t a_s = -0.00192723;
+    const Double_t b_s = 2.19395;
+    const Double_t alpha_s0 = 0.15554;
+    const Double_t alpha_s1 = 0.0118869;
 
-    const Double_t s_r0 = 1.;
-    const Double_t t0   = 1.;
+    const Double_t s_r0 = 0.0578659;
+    
+    const Double_t k_h  = 0.966641;
+    const Double_t p_h  = 0.913884;
+    const Double_t k_s  = 3.60448;
+    const Double_t p_s  = 1.22367;
     
     //	Secondary reggeons
     min->SetVariable(0, "a_w", a_w, 0.01);                    min->SetFixedVariable(0, "a_w", a_w);
@@ -404,12 +432,15 @@ void Fit() {
     min->SetVariable(11, "\\alpha^(h)_1", alpha_h1, 0.01);    //min->SetFixedVariable(11, "\\alpha^(h)_1", alpha_h1);
         
     min->SetVariable(12, "a^(s)", a_s, 0.01);                 min->SetFixedVariable(12, "a^(s)", a_s);
-    min->SetVariable(13, "b^(s)", b_s, 0.01);                 min->SetFixedVariable(13, "b^(s)", b_s);
+    min->SetVariable(13, "b^(s)", b_s, 0.01);                 //min->SetFixedVariable(13, "b^(s)", b_s);
     min->SetVariable(14, "\\alpha^(s)_0", alpha_s0, 0.01);    //min->SetFixedVariable(14, "\\alpha^(s)_0", alpha_s0);
     min->SetVariable(15, "\\alpha^(s)_1", alpha_s1, 0.01);    //min->SetFixedVariable(15, "\\alpha^(s)_1", alpha_s1);
         
-    min->SetVariable(16, "s_{r0}", s_r0, 0.01);               min->SetFixedVariable(16, "s_{r0}", s_r0 );
-//    min->SetVariable(17, "t_0", t0, 0.01);                    min->SetFixedVariable(17, "t_0", t0 );
+    min->SetVariable(16, "s_{r0}", s_r0, 0.01);               //min->SetFixedVariable(16, "s_{r0}", s_r0 );
+    min->SetVariable(17, "k_h", k_h, 0.01);                   //min->SetFixedVariable(17, "k_h", k_h );
+    min->SetVariable(18, "p_h", p_h, 0.01);                   //min->SetFixedVariable(18, "p_h", p_h );
+    min->SetVariable(19, "k_s", k_s, 0.01);                   //min->SetFixedVariable(19, "k_s", k_s );
+    min->SetVariable(20, "p_s", p_s, 0.01);                   //min->SetFixedVariable(20, "p_s", p_s );
 
     min->Minimize();
 
@@ -471,11 +502,12 @@ void Fit() {
     PutEnergy(3., 1.e-2, 62.5);
 
     theCanvasD -> cd(6);
-//    TF1* Dfunction5 = new TF1("Dfunction6", GRAPHFunctionPPCS_dt, 0., 7., NPARAMS + 1);
-//    Dfunction6 -> SetParameters(par);
-//    SetUpFunc(Dfunction6, color);
-//    Dfunction6 -> Draw("same");
-//    PutEnergy(1.5, 1.e-2, 7000.);
+    Functor* f7000 = ppdsdt7000->getModel();
+    TF1* Dfunction6 = new TF1("Dfunction6", f7000, 0., 7., NPARAMS + 1);
+    Dfunction6 -> SetParameters(par);
+    SetUpFunc(Dfunction6, color);
+    Dfunction6 -> Draw("same");
+    PutEnergy(1.5, 1.e-2, 7000.);
     
     ////////////////////////////////////////////DIFFERENTIAL BAR PP////////////////////////////////////
     theCanvasD_ -> cd(1);
@@ -532,8 +564,8 @@ void Fit() {
     theCanvasTOTEM -> SetLeftMargin(0.2);
     theCanvasTOTEM -> SetLogy(kTRUE);
     SetUpDiffXSGraph(Dgr6);
-//    Dfunction5 ->SetLineWidth(3);
-//    Dfunction5 -> Draw("same");
+    Dfunction6 ->SetLineWidth(3);
+    Dfunction6 -> Draw("same");
     PutEnergy(4., 1.e-2, 7000);
 
     theCanvasTOTEM -> Modified();
