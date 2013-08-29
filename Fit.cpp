@@ -376,70 +376,7 @@ void Fit() {
     ROOT::Math::Functor f(chi2, NPARAMS);
     min->SetFunction(f);
 
-    TStopwatch timer;
-    printf("Starting timer\n");
-    timer.Start();
-
-
-    const Double_t Pi = TMath::Pi();
-    //--------------------- Secondary reggeons ---------------------------//
-    ///////////////////////////////////////linear trajectory parameters
-    const Double_t a_w = 0.;
-    const Double_t b_w = 0.;
-    const Double_t alpha_w0 = 0.; //w Regge tr. intercept
-    const Double_t alpha_w = 0.; //w Regge tr. slope
-    //	f-Reggeon parameters
-    const Double_t a_f = 108.;
-    const Double_t b_f = 7.06572;
-    const Double_t alpha_f0 = 0.758005; //f Regge tr. intercept
-    const Double_t alpha_f = -0.298531; //f Regge tr. slope
-
-    //-------------------------Hard pomeron ------------------------------//
-    const Double_t a_h = 0.68;
-    const Double_t b_h = 0.527592;
-    const Double_t alpha_h0 = 1.96018;
-    const Double_t alpha_h1 = 0.944414;
-    //------------------------- Soft pomeron ------------------------//
-    const Double_t a_s = -0.00192723;
-    const Double_t b_s = 37.4819;
-    const Double_t alpha_s0 = 0.124683;
-    const Double_t alpha_s1 = 0.0103317;
-
-    const Double_t s_r0 = 3.34647;
-    
-    const Double_t k_h  = 0.805904;
-    const Double_t p_h  = 0.913884;
-    const Double_t k_s  = 4.88161;
-    const Double_t p_s  = 1.22367;
-
-    std::vector< std::pair< string, double > > ipar(NPARAMS);
-    //--------------------- Secondary reggeons ---------------------------//
-    //	w-Reggeon parameters
-    ipar[0]  = std::make_pair("a_w", 0.);
-    ipar[1]  = std::make_pair("alpha_w0",0.);
-    ipar[2]  = std::make_pair("alpha_w",0.);
-    ipar[3]  = std::make_pair("b_w",0.);
-    //	f-Reggeon parameters
-    ipar[4]  = std::make_pair("a_f",28.8358);
-    ipar[5]  = std::make_pair("alpha_f0",0.975659);
-    ipar[6]  = std::make_pair("alpha_f",0.173279);
-    ipar[7]  = std::make_pair("b_f",4.32245);
-    //-------------------------Hard pomeron ------------------------------//
-    ipar[8]   = std::make_pair("a^(h)",0.68);
-    ipar[9]   = std::make_pair("b^(h)",-1.1946);
-    ipar[10]  = std::make_pair("\\alpha^(h)_0",2.24753);
-    ipar[11]  = std::make_pair("\\alpha^(h)_1",1.00781);
-    //------------------------- Soft pomeron ------------------------//
-    ipar[12]  = std::make_pair("a^(s)",-0.00192723);
-    ipar[13]  = std::make_pair("b^(s)",36.3968);
-    ipar[14]  = std::make_pair("\\alpha^(s)_0",0.114327);
-    ipar[15]  = std::make_pair("\\alpha^(s)_1",0.00971971);
-    
-    ipar[16]  = std::make_pair("s_{r0}",3.34647);
-    ipar[17]  = std::make_pair("k_h",1.04729);
-    ipar[18]  = std::make_pair("p_h",0.82152);
-    ipar[19]  = std::make_pair("k_s",6.81972);
-    ipar[20]  = std::make_pair("p_s",1.14641);
+    #include "parameters/best_f_soft_hard.par"
     
     //	Secondary reggeons
     min->SetVariable(0, ipar[0].first, ipar[0].second, 0.01);     min->SetFixedVariable(0, ipar[0].first, ipar[0].second);
@@ -467,6 +404,10 @@ void Fit() {
     min->SetVariable(19, ipar[19].first, ipar[19].second, 0.01);    //min->SetFixedVariable(19, ipar[19].first, ipar[19].second );
     min->SetVariable(20, ipar[20].first, ipar[20].second, 0.01);    //min->SetFixedVariable(20, ipar[20].first, ipar[20].second );
 
+    TStopwatch timer;
+    printf("Starting timer\n");
+    timer.Start();
+    
     min->Minimize();
 
     npoints = chi2.getNPoints();
