@@ -25,9 +25,16 @@ public:
 
     /** get seter of mass energy */
     double getSqrtS() const;
+    
+    void setScale(double);
+    
+    double getScale() const;
 
 private:
+    /** Center of mass energy */
     double _s;
+    /** Function scale factor, used for plotting purposes */
+    double _scale;
     /* add your private declarations */
 
 };

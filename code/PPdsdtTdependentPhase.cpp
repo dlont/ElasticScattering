@@ -15,13 +15,15 @@
 
 PPdsdtTdependentPhase::PPdsdtTdependentPhase() : 
 Functor(),
-_s(-1.)
+_s(-1.),
+_scale(1.)
 {
 }
 
 PPdsdtTdependentPhase::PPdsdtTdependentPhase( double s ) :
 Functor(),
-_s(s)
+_s(s),
+_scale(1.)
 {
 }
 
@@ -98,7 +100,7 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
     Double_t Im2 = Im * Im;
     Double_t Re2 = Re * Re;
 
-    return ( (Pi / (s * s) ) * (Re2 + Im2) * GEV2MB);
+    return _scale * ( (Pi / (s * s) ) * (Re2 + Im2) * GEV2MB);
 
 }
 
@@ -107,6 +109,11 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
  * @param sqrtS centre of mass energy
  */
 void PPdsdtTdependentPhase::setSqrtS(double sqrtS) {
+    if ( sqrtS < 0 ) {
+        std::cout << "ERROR: Negative energy is not allowed" << std::endl;
+        std::cout << "ERROR: Check supplied value: " << sqrtS << std::endl;
+        return;
+    }
     this->_s = sqrtS;
 }
 
@@ -116,5 +123,18 @@ void PPdsdtTdependentPhase::setSqrtS(double sqrtS) {
  */
 double PPdsdtTdependentPhase::getSqrtS() const {
     return _s;
+}
+
+void PPdsdtTdependentPhase::setScale(double scale) {
+    if ( scale < 0 ) {
+        std::cout << "ERROR: Negative energy is not allowed" << std::endl;
+        std::cout << "ERROR: Check supplied value: " << scale << std::endl;
+        return;
+    }
+    this->_scale = scale;
+}
+
+double PPdsdtTdependentPhase::getScale() const {
+    return _scale;
 }
 
