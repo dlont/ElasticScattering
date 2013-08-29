@@ -43,11 +43,6 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
     const Double_t s_r0 = par[ 16 ];
     const Double_t L = TMath::Log(s / s_r0);
     //
-    Double_t termA_w = 0.;
-    Double_t termA_f = 0.;
-    Double_t termA_P = 0.;
-    Double_t termA_O = 0.;
-    //
     const Double_t Pi = TMath::Pi();
     //w-Reggeon parameeters
     Double_t a_w = par[ 0 ];
@@ -79,8 +74,14 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
     Double_t p_s = par[ 20];
 
     // Calculating amplitudes
-    TComplex A;
+    Double_t w_traj = alpha_w0 + alpha_w*t;
+    TComplex Aw = TComplex(0.,1.)*TComplex::Exp( TComplex( 0., -Pi*(w_traj)/2. ) ) * a_w * TMath::Exp( b_w*t ) * TMath::Power( s/s_r0, w_traj );
 
+    Double_t f_traj = alpha_f0 + alpha_f*t;
+    TComplex Af = TComplex::Exp( TComplex( 0., -Pi*(f_traj)/2. ) ) * a_f * TMath::Exp( b_f*t ) * TMath::Power( s/s_r0, f_traj );
+
+    
+    TComplex A;
     TComplex exp_term_h(b_h + k_h*TMath::Power(L,p_h), 0.);
     TComplex exp_term_s(b_s + k_s*TMath::Power(L,p_s), -Pi/2.);
     
@@ -88,7 +89,9 @@ double PPdsdtTdependentPhase::operator() ( double* x, const double *par )
     TComplex alpha_s(alpha_s0 + alpha_s1*t, 0.);
 
     A = a_h * TComplex::Exp(exp_term_h * alpha_h) + a_s * TComplex::Exp(exp_term_s * alpha_s);
-
+    A += Aw;
+    A += Af;
+    
     Double_t Im = A.Im();
     Double_t Re = A.Re();
 
