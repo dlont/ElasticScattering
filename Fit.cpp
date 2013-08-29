@@ -274,10 +274,21 @@ void Fit() {
     theCanvasD_ -> Update();
 
     TRangeCondition* condTinRange = new TRangeCondition("ConditionTinRange0.1-8", 0.1, 6.);
+//    TRangeCondition* condTinRange = new TRangeCondition("ConditionTinRange0.1-8", 0.8, 6.);
+//    TRangeCondition* condTinRange = new TRangeCondition("ConditionTinRange0.1-8", 2.5, 6.);
+//    TRangeCondition* condTinRange = new TRangeCondition("ConditionTinRange0.1-8", 0.1, 0.8);
+//    TRangeCondition* condTinRange = new TRangeCondition("ConditionTinRange0.1-8", 0.5, 1.);
 //    condTinRange->print();
     TRangeCondition* condTinRange1 = new TRangeCondition("ConditionTinRange0.1-8", 0.1, 5.5);
+//    TRangeCondition* condTinRange1 = new TRangeCondition("ConditionTinRange0.1-8", 0.8, 5.5);
+//    TRangeCondition* condTinRange1 = new TRangeCondition("ConditionTinRange0.1-8", 2.5, 5.5);
+//    TRangeCondition* condTinRange1 = new TRangeCondition("ConditionTinRange0.1-8", 0.1, 0.8);
+//    TRangeCondition* condTinRange1 = new TRangeCondition("ConditionTinRange0.1-8", 0.5, 1.);
 //    condTinRange1->print();
 
+    TRangeCondition* condTinRange2 = new TRangeCondition("ConditionTinRange0.1-8", 0.3, 3.5);
+//    condTinRange2->print();
+    
     double s = 23.503*23.503;
     DatasetPPdsdt* ppdsdt23 = new DatasetPPdsdt( "dsdtPP23GeV", s );
     ppdsdt23->setModel( new PPdsdtTdependentPhase(s) );
@@ -312,10 +323,10 @@ void Fit() {
     DatasetPPdsdt* ppdsdt7000 = new DatasetPPdsdt( "dsdtPP7000GeV", s );
     ppdsdt7000->setModel( new PPdsdtTdependentPhase(s) );
     ppdsdt7000->setGraph( Dgr6 );
-    ppdsdt7000->setCondition( condTinRange );
+    ppdsdt7000->setCondition( condTinRange2 );
     
     CompositeDataset* dataset_dsdtPP = new CompositeDataset( "dsdtPPcombined" );
-    dataset_dsdtPP->getComposite()->addDataset( ppdsdt23 );
+//    dataset_dsdtPP->getComposite()->addDataset( ppdsdt23 );
     dataset_dsdtPP->getComposite()->addDataset( ppdsdt30 );
     dataset_dsdtPP->getComposite()->addDataset( ppdsdt44 );
     dataset_dsdtPP->getComposite()->addDataset( ppdsdt53 );
@@ -350,17 +361,18 @@ void Fit() {
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLSimAn", "" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiFit", "" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "ConjugatePR" );
-    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "ConjugateFR" );
+//    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "ConjugateFR" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "BFGS2" );
+//    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "Fumili", "" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "Minuit2", "Fumili2" );
-//    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad");
+    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad");
 
     min->SetPrintLevel(2);
     min->SetMaxFunctionCalls(1000000);
-    min->SetMaxIterations(1e5);
-    min->SetTolerance(1e-15);
-    min->SetPrecision(1e-15);
-    //min->SetTolerance(100);
+    min->SetMaxIterations(1e3);
+//    min->SetTolerance(1e-15);
+//    min->SetTolerance(100);
+//    min->SetPrecision(1e-15);
     ROOT::Math::Functor f(chi2, NPARAMS);
     min->SetFunction(f);
 
@@ -377,70 +389,83 @@ void Fit() {
     const Double_t alpha_w0 = 0.; //w Regge tr. intercept
     const Double_t alpha_w = 0.; //w Regge tr. slope
     //	f-Reggeon parameters
-    const Double_t a_f = 0.;
-    const Double_t b_f = 0.;
-    const Double_t alpha_f0 = 0.; //f Regge tr. intercept
-    const Double_t alpha_f = 0.; //f Regge tr. slope
+    const Double_t a_f = 108.;
+    const Double_t b_f = 7.06572;
+    const Double_t alpha_f0 = 0.758005; //f Regge tr. intercept
+    const Double_t alpha_f = -0.298531; //f Regge tr. slope
 
-    //-------------------- Hard and soft pomerons single log ------------------------//
-    //-------------------------Hard pomeron ------------------------------//
-//    const Double_t a_h = 0.68;
-//    const Double_t b_h = -1.77;
-//    const Double_t alpha_h0 = 0.653069;
-//    const Double_t alpha_h1 = 0.153269;
-//    //------------------------- Soft pomeron ------------------------//
-//    const Double_t a_s = -3.784E-5;
-//    const Double_t b_s = 12.03;
-//    const Double_t alpha_s0 = 1.00194;
-//    const Double_t alpha_s1 = 0.256852;
-//
-//    const Double_t s_r0 = 1.;
-//    const Double_t k_h  = 1.;
-//    const Double_t k_s  = 1.;
-    //-------------------- Hard and soft pomerons no phase log ------------------------//
     //-------------------------Hard pomeron ------------------------------//
     const Double_t a_h = 0.68;
-    const Double_t b_h = -2.01487;
-    const Double_t alpha_h0 = 1.60532;
-    const Double_t alpha_h1 = 0.844252;
+    const Double_t b_h = 0.527592;
+    const Double_t alpha_h0 = 1.96018;
+    const Double_t alpha_h1 = 0.944414;
     //------------------------- Soft pomeron ------------------------//
     const Double_t a_s = -0.00192723;
-    const Double_t b_s = 2.19395;
-    const Double_t alpha_s0 = 0.15554;
-    const Double_t alpha_s1 = 0.0118869;
+    const Double_t b_s = 37.4819;
+    const Double_t alpha_s0 = 0.124683;
+    const Double_t alpha_s1 = 0.0103317;
 
-    const Double_t s_r0 = 0.0578659;
+    const Double_t s_r0 = 3.34647;
     
-    const Double_t k_h  = 0.966641;
+    const Double_t k_h  = 0.805904;
     const Double_t p_h  = 0.913884;
-    const Double_t k_s  = 3.60448;
+    const Double_t k_s  = 4.88161;
     const Double_t p_s  = 1.22367;
+
+    std::vector< std::pair< string, double > > ipar(NPARAMS);
+    //--------------------- Secondary reggeons ---------------------------//
+    //	w-Reggeon parameters
+    ipar[0]  = std::make_pair("a_w", 0.);
+    ipar[1]  = std::make_pair("alpha_w0",0.);
+    ipar[2]  = std::make_pair("alpha_w",0.);
+    ipar[3]  = std::make_pair("b_w",0.);
+    //	f-Reggeon parameters
+    ipar[4]  = std::make_pair("a_f",28.8358);
+    ipar[5]  = std::make_pair("alpha_f0",0.975659);
+    ipar[6]  = std::make_pair("alpha_f",0.173279);
+    ipar[7]  = std::make_pair("b_f",4.32245);
+    //-------------------------Hard pomeron ------------------------------//
+    ipar[8]   = std::make_pair("a^(h)",0.68);
+    ipar[9]   = std::make_pair("b^(h)",-1.1946);
+    ipar[10]  = std::make_pair("\\alpha^(h)_0",2.24753);
+    ipar[11]  = std::make_pair("\\alpha^(h)_1",1.00781);
+    //------------------------- Soft pomeron ------------------------//
+    ipar[12]  = std::make_pair("a^(s)",-0.00192723);
+    ipar[13]  = std::make_pair("b^(s)",36.3968);
+    ipar[14]  = std::make_pair("\\alpha^(s)_0",0.114327);
+    ipar[15]  = std::make_pair("\\alpha^(s)_1",0.00971971);
+    
+    ipar[16]  = std::make_pair("s_{r0}",3.34647);
+    ipar[17]  = std::make_pair("k_h",1.04729);
+    ipar[18]  = std::make_pair("p_h",0.82152);
+    ipar[19]  = std::make_pair("k_s",6.81972);
+    ipar[20]  = std::make_pair("p_s",1.14641);
     
     //	Secondary reggeons
-    min->SetVariable(0, "a_w", a_w, 0.01);                    min->SetFixedVariable(0, "a_w", a_w);
-    min->SetVariable(1, "alpha_w0", alpha_w0, 0.01);          min->SetFixedVariable(1, "alpha_w0", alpha_w0);
-    min->SetVariable(2, "alpha_w", alpha_w, 0.01);            min->SetFixedVariable(2, "alpha_w", alpha_w);
-    min->SetVariable(3, "b_w", b_w, 0.01);                    min->SetFixedVariable(3, "b_w", b_w);
-    min->SetVariable(4, "a_f", a_f, 0.01);                    min->SetFixedVariable(4, "a_f", a_f);
-    min->SetVariable(5, "alpha_f0", alpha_f0, 0.01);          min->SetFixedVariable(5, "alpha_f0", alpha_f0);
-    min->SetVariable(6, "alpha_f", alpha_f, 0.01);            min->SetFixedVariable(6, "alpha_f", alpha_f);
-    min->SetVariable(7, "b_f", b_f, 0.01);                    min->SetFixedVariable(7, "b_f", b_f);
+    min->SetVariable(0, ipar[0].first, ipar[0].second, 0.01);     min->SetFixedVariable(0, ipar[0].first, ipar[0].second);
+    min->SetVariable(1, ipar[1].first, ipar[1].second, 0.01);     min->SetFixedVariable(1, ipar[1].first, ipar[1].second);
+    min->SetVariable(2, ipar[2].first, ipar[2].second, 0.01);     min->SetFixedVariable(2, ipar[2].first, ipar[2].second);
+    min->SetVariable(3, ipar[3].first, ipar[3].second, 0.01);     min->SetFixedVariable(3, ipar[3].first, ipar[3].second);
+    min->SetVariable(4, ipar[4].first, ipar[4].second, 0.01);     //min->SetFixedVariable(4, ipar[4].first, ipar[4].second);
+    min->SetVariable(5, ipar[5].first, ipar[5].second, 0.01);     //min->SetFixedVariable(5, ipar[5].first, ipar[5].second);
+    min->SetVariable(6, ipar[6].first, ipar[6].second, 0.01);     //min->SetFixedVariable(6, ipar[6].first, ipar[6].second);
+    min->SetVariable(7, ipar[7].first, ipar[7].second, 0.01);     //min->SetFixedVariable(7, ipar[7].first, ipar[7].second);
     ////	Primary reggeons (Pomeron)    
-    min->SetVariable(8, "a^(h)", a_h, 0.01);                  min->SetFixedVariable(8, "a^(h)", a_h );
-    min->SetVariable(9, "b^(h)", b_h, 0.01);                  //min->SetFixedVariable(9, "b^(h)", b_h );
-    min->SetVariable(10, "\\alpha^(h)_0", alpha_h0, 0.01);    //min->SetFixedVariable(10, "\\alpha^(h)_0", alpha_h0);
-    min->SetVariable(11, "\\alpha^(h)_1", alpha_h1, 0.01);    //min->SetFixedVariable(11, "\\alpha^(h)_1", alpha_h1);
+    min->SetVariable(8, ipar[8].first, ipar[8].second, 0.01);       min->SetFixedVariable(8, ipar[8].first, ipar[8].second );
+    min->SetVariable(9, ipar[9].first, ipar[9].second, 0.01);       //min->SetFixedVariable(9, ipar[9].first, ipar[9].second );
+    min->SetVariable(10, ipar[10].first, ipar[10].second, 0.01);    //min->SetFixedVariable(10, ipar[10].first, ipar[10].second);
+    min->SetVariable(11, ipar[11].first, ipar[11].second, 0.01);    //min->SetFixedVariable(11, ipar[11].first, ipar[11].second);
         
-    min->SetVariable(12, "a^(s)", a_s, 0.01);                 min->SetFixedVariable(12, "a^(s)", a_s);
-    min->SetVariable(13, "b^(s)", b_s, 0.01);                 //min->SetFixedVariable(13, "b^(s)", b_s);
-    min->SetVariable(14, "\\alpha^(s)_0", alpha_s0, 0.01);    //min->SetFixedVariable(14, "\\alpha^(s)_0", alpha_s0);
-    min->SetVariable(15, "\\alpha^(s)_1", alpha_s1, 0.01);    //min->SetFixedVariable(15, "\\alpha^(s)_1", alpha_s1);
+    min->SetVariable(12, ipar[12].first, ipar[12].second, 0.01);    //min->SetFixedVariable(12, ipar[12].first, ipar[12].second);
+    min->SetVariable(13, ipar[13].first, ipar[13].second, 0.01);    //min->SetFixedVariable(13, ipar[13].first, ipar[13].second);
+    min->SetVariable(14, ipar[14].first, ipar[14].second, 0.01);    //min->SetFixedVariable(14, ipar[14].first, ipar[14].second);
+    min->SetVariable(15, ipar[15].first, ipar[15].second, 0.01);    //min->SetFixedVariable(15, ipar[15].first, ipar[15].second);
         
-    min->SetVariable(16, "s_{r0}", s_r0, 0.01);               //min->SetFixedVariable(16, "s_{r0}", s_r0 );
-    min->SetVariable(17, "k_h", k_h, 0.01);                   //min->SetFixedVariable(17, "k_h", k_h );
-    min->SetVariable(18, "p_h", p_h, 0.01);                   //min->SetFixedVariable(18, "p_h", p_h );
-    min->SetVariable(19, "k_s", k_s, 0.01);                   //min->SetFixedVariable(19, "k_s", k_s );
-    min->SetVariable(20, "p_s", p_s, 0.01);                   //min->SetFixedVariable(20, "p_s", p_s );
+    min->SetVariable(16, ipar[16].first, ipar[16].second, 0.01);    min->SetFixedVariable(16, ipar[16].first, ipar[16].second );
+    min->SetVariable(17, ipar[17].first, ipar[17].second, 0.01);    //min->SetFixedVariable(17, ipar[17].first, ipar[17].second );
+    min->SetVariable(18, ipar[18].first, ipar[18].second, 0.01);    //min->SetFixedVariable(18, ipar[18].first, ipar[18].second );
+    min->SetVariable(19, ipar[19].first, ipar[19].second, 0.01);    //min->SetFixedVariable(19, ipar[19].first, ipar[19].second );
+    min->SetVariable(20, ipar[20].first, ipar[20].second, 0.01);    //min->SetFixedVariable(20, ipar[20].first, ipar[20].second );
 
     min->Minimize();
 
@@ -571,7 +596,7 @@ void Fit() {
     theCanvasTOTEM -> Modified();
     //theCanvasTOTEM -> Print("plots\\separate_fit_each_energy\\7000GeV.eps");
 
-    if (false) {
+    if (true) {
         const int first_param = 8;
         const int last_param = 17;
         TString strEne("DP");
@@ -582,25 +607,36 @@ void Fit() {
         ofstream file(filename.Data());
         file << strEne.Data() << " GeV, " << "$\\chi^2$/NDF," << minChi2 / NDF << std::endl;
         for (int k = first_param; k < last_param; k++) {
-            float rel_err = minParErr[k] / minPar[k];
-            //int prec = 
-            file . setf(std::ios::left);
-            file << "$" << min->VariableName(k) << "$" << ",";
-            file . unsetf(std::ios::left);
-            //file . setf( ios::fixed,ios::floatfield );
-            //file . setf( ios::showpos );
-            //file << fixed;
-            file << std::setw(20);
-            file << std::fixed
-                    << std::setprecision(abs(Order(minParErr[k]) - Order(minPar[k])) + SigDig(minParErr[k]) - 1);
-            file << Result(minPar[k], minParErr[k]) * TMath::Power(10., -Order(minPar[k])) << ",";
-            file << std::setw(20);
-            file << std::fixed;
-            file << std::setprecision(abs(Order(minParErr[k]) - Order(minPar[k])) + SigDig(minParErr[k]) - 1)
-                    << AbsErr(minParErr[k])*(TMath::Power(10., Order(minParErr[k]) - Order(minPar[k])));
-            file << std::setw(10);
-            if (Order(minPar[k]) == 0) file << "," << std::endl;
-            else file << ", " << "$\\times 10^{" << Order(minPar[k]) << "}$" << std::endl;
+            if ( minParErr[k] > 0. ) {  // Parameter was not fixed
+                float rel_err = minParErr[k] / minPar[k];
+                file . setf(std::ios::left);
+                file << "$" << min->VariableName(k) << "$" << ",";
+                file . unsetf(std::ios::left);
+                file << std::setw(20);
+                file << std::fixed
+                        << std::setprecision(abs(Order(minParErr[k]) - Order(minPar[k])) + SigDig(minParErr[k]) - 1);
+                file << Result(minPar[k], minParErr[k]) * TMath::Power(10., -Order(minPar[k])) << ",";
+                file << std::setw(20);
+                file << std::fixed;
+                file << std::setprecision(abs(Order(minParErr[k]) - Order(minPar[k])) + SigDig(minParErr[k]) - 1)
+                        << AbsErr(minParErr[k])*(TMath::Power(10., Order(minParErr[k]) - Order(minPar[k])));
+                file << std::setw(10);
+                if (Order(minPar[k]) == 0) file << "," << std::endl;
+                else file << ", " << "$\\times 10^{" << Order(minPar[k]) << "}$" << std::endl;
+            } else {    // Parameter was fixed
+                file . setf(std::ios::left);
+                file << "$" << min->VariableName(k) << "$" << ",";
+                file . unsetf(std::ios::left);
+                file << std::setw(20);
+                file << std::fixed
+                        << minPar[k] << ",";
+                file << std::setw(20);
+                file << std::fixed;
+                file << std::setprecision(1)
+                        << "fixed";
+                file << std::setw(10);
+                file << "," << std::endl;
+            }
         }
         file.close();
 
