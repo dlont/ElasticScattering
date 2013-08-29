@@ -542,18 +542,6 @@ void Fit() {
     dropper->setMinimizer(min);
     dropper->DumpFileCSV( npoints, "XXX.csv", parIDs );
     dropper->DumpInitParametersInclude( "XXX.par" );
-//
-//        str_postfix = "PP_";
-//        str_postfix += strEne;
-//        str_postfix += ".arr";
-//        TString file1name(TString() + str_postfix);
-//        ofstream file1(file1name.Data());
-//        file1 << "Double_t Dpar[" << NPARAMS << "] = { " << std::endl;
-//        for (int k = 0; k < NPARAMS - 1; k++) file1 << minPar[k] << ", " << std::endl;
-//        file1 << minPar[NPARAMS - 1] << "};" << std::endl;
-//        file1.close();
-//
-
 
     timer.Stop();
     printf("Time at the end of job = %f seconds\n", timer.CpuTime());
