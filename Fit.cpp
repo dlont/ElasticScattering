@@ -36,14 +36,13 @@
 
 #define NPARAMS 21
 
-#include "SigDig.cxx"
-
 #include "code/DatasetPPdsdt.h"
 #include "code/CompositeDataset.h"
 #include "code/PPdsdt.h"
 #include "code/TRangeCondition.h"
 #include "code/Barppdsdt.h"
 #include "code/PPdsdtTdependentPhase.h"
+#include "code/WriteParametersInfo.h"
 
 //////////////////////////////////////////GLOBAL VARIABLES///////////////////////////////////////////////
 //	Path input file with hadrons CSs
@@ -537,61 +536,23 @@ void Fit() {
     theCanvasTOTEM -> Modified();
     //theCanvasTOTEM -> Print("plots\\separate_fit_each_energy\\7000GeV.eps");
 
-    if (true) {
-        const int first_param = 8;
-        const int last_param = 17;
-        TString strEne("DP");
-        TString str_postfix("PP_");
-        str_postfix += strEne;
-        str_postfix += ".csv";
-        TString filename(TString("chi2_") + str_postfix);
-        ofstream file(filename.Data());
-        file << strEne.Data() << " GeV, " << "$\\chi^2$/NDF," << minChi2 / NDF << std::endl;
-        for (int k = first_param; k < last_param; k++) {
-            if ( minParErr[k] > 0. ) {  // Parameter was not fixed
-                float rel_err = minParErr[k] / minPar[k];
-                file . setf(std::ios::left);
-                file << "$" << min->VariableName(k) << "$" << ",";
-                file . unsetf(std::ios::left);
-                file << std::setw(20);
-                file << std::fixed
-                        << std::setprecision(abs(Order(minParErr[k]) - Order(minPar[k])) + SigDig(minParErr[k]) - 1);
-                file << Result(minPar[k], minParErr[k]) * TMath::Power(10., -Order(minPar[k])) << ",";
-                file << std::setw(20);
-                file << std::fixed;
-                file << std::setprecision(abs(Order(minParErr[k]) - Order(minPar[k])) + SigDig(minParErr[k]) - 1)
-                        << AbsErr(minParErr[k])*(TMath::Power(10., Order(minParErr[k]) - Order(minPar[k])));
-                file << std::setw(10);
-                if (Order(minPar[k]) == 0) file << "," << std::endl;
-                else file << ", " << "$\\times 10^{" << Order(minPar[k]) << "}$" << std::endl;
-            } else {    // Parameter was fixed
-                file . setf(std::ios::left);
-                file << "$" << min->VariableName(k) << "$" << ",";
-                file . unsetf(std::ios::left);
-                file << std::setw(20);
-                file << std::fixed
-                        << minPar[k] << ",";
-                file << std::setw(20);
-                file << std::fixed;
-                file << std::setprecision(1)
-                        << "fixed";
-                file << std::setw(10);
-                file << "," << std::endl;
-            }
-        }
-        file.close();
-
-        str_postfix = "PP_";
-        str_postfix += strEne;
-        str_postfix += ".arr";
-        TString file1name(TString() + str_postfix);
-        ofstream file1(file1name.Data());
-        file1 << "Double_t Dpar[" << NPARAMS << "] = { " << std::endl;
-        for (int k = 0; k < NPARAMS - 1; k++) file1 << minPar[k] << ", " << std::endl;
-        file1 << minPar[NPARAMS - 1] << "};" << std::endl;
-        file1.close();
-
-    }
+    WriteParametersInfo* dropper = new WriteParametersInfo();
+    int ids[] = {8, 9, 10, 11, 12, 13, 14, 15, 16};
+    std::vector<int> parIDs(ids, ids + sizeof (ids) / sizeof (int));
+    dropper->setMinimizer(min);
+    dropper->DumpFileCSV( npoints, "XXX.csv", parIDs );
+    dropper->DumpInitParametersInclude( "XXX.par" );
+//
+//        str_postfix = "PP_";
+//        str_postfix += strEne;
+//        str_postfix += ".arr";
+//        TString file1name(TString() + str_postfix);
+//        ofstream file1(file1name.Data());
+//        file1 << "Double_t Dpar[" << NPARAMS << "] = { " << std::endl;
+//        for (int k = 0; k < NPARAMS - 1; k++) file1 << minPar[k] << ", " << std::endl;
+//        file1 << minPar[NPARAMS - 1] << "};" << std::endl;
+//        file1.close();
+//
 
 
     timer.Stop();

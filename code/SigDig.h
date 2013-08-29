@@ -10,7 +10,11 @@
 /// 0.00052349 +/- 0.00000123
 /// 5.235 +/- 0.012  10^-4
 
+#ifndef SIGDIG_H
+#define SIGDIG_H
+
 #include <iostream>
+#include "TMath.h"
 
 Int_t SigDig(Double_t err) {
     Int_t nSigDig = 1;
@@ -145,3 +149,5 @@ Double_t AbsErr(Double_t err) {
     }
     return AbsErr;
 }
+
+#endif /* SIGDIG_H */

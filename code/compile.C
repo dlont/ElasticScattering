@@ -14,4 +14,7 @@ void compile()
 	gSystem->CompileMacro("Condition.cpp","++");
 	gSystem->CompileMacro("CompositeCondition.cpp","++");
 	gSystem->CompileMacro("TRangeCondition.cpp","++");
+
+	gSystem->CompileMacro("WriteParametersInfo.cpp","++");
+
 }

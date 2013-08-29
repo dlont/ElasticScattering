@@ -20,6 +20,9 @@ void run()
 
 	gSystem->Load("code/chi2Object_cpp.dll");
 
+	gSystem->Load("code/WriteParametersInfo_cpp.dll");
+
+
 
 	gSystem->CompileMacro("Fit.cpp");
 
