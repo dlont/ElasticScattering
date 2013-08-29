@@ -83,6 +83,9 @@ Int_t Order( Double_t val )
     Int_t order = 0;
     if( val > 0 ) {
         order = floor( TMath::Log10( val ) );
+    } else {
+        std::cout << "ERROR: Order()" << std::endl;
+        std::cout << "Negative value of argument: " << val << std::endl;
     }
     return order;
 }
