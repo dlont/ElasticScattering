@@ -23,6 +23,7 @@
 #include <fstream>
 #include <iomanip>
 #include <vector>
+#include <map>
 
 #include <cstdio>
 
@@ -83,6 +84,7 @@ void SetUpDiffXSGraph(TGraph* graph, Double_t scale = 1.) {
         ye[i] *= scale;
     }
 
+    graph -> SetTitle("");
     graph -> SetMarkerStyle(25);
     graph -> SetMarkerSize(0.5);
     graph -> Draw("samePE");
@@ -93,7 +95,8 @@ void SetUpDiffXSGraph(TGraph* graph, Double_t scale = 1.) {
     graph -> GetXaxis() -> SetTitleFont(132);
     graph -> GetYaxis() -> SetTitle("\\frac{d#sigma}{dt}   (mb/GeV^{2})");
     graph -> GetYaxis() -> CenterTitle(true);
-    graph -> GetYaxis() -> SetTitleOffset(1.55);
+    graph -> GetYaxis() -> SetTitleSize(0.05);
+    graph -> GetYaxis() -> SetTitleOffset(1.85);
     graph -> GetYaxis() -> SetLabelFont(132);
     graph -> GetYaxis() -> SetTitleFont(132);
 
@@ -313,9 +316,6 @@ TString name_LHC("LHC");
 TString name_ReIm("ReImContrib");
 
 void Fit() {
-    ////	Total cross sections graphs
-    //TGraphErrors* Tgr1;
-    //TGraphErrors* Tgr2;
 
     //	Differential cross sections graphs for PP
     TGraphErrors* Dgr1;
@@ -374,13 +374,14 @@ void Fit() {
  
     #include "parameters/best_f_soft_hard.inc"
     Double_t par[NPARAMS];
-    for ( int ipar = 0; ipar < NPARAMS; ++ipar ) {
-        par[ ipar ] = ipar[ ipar ].second;
+    for ( int i = 0; i < NPARAMS; ++i ) {
+        par[ i ] = ipar[ i ].second;
     }
     
     double s = 23.503*23.503;
+    double scale = 1.e1;
     Functor* f23 = new PPdsdtTdependentPhase( s );
-    f23->setScale(1.);
+    static_cast<PPdsdtTdependentPhase*>(f23)->setScale(scale);
     TF1* Dfunction1 = new TF1("Dfunction1", f23, 0., 5.8, 23);
     Dfunction1 -> SetParameters(par);
     SetUpFunc(Dfunction1, color);
@@ -390,16 +391,18 @@ void Fit() {
     //	DrawFuncUncertainty( Dfunction1, par, parErr );
 
     s = 30.7*30.7;
+    scale = 1.e-1;
     Functor* f31 = new PPdsdtTdependentPhase( s );
-    f31->setScale(1.);
+    static_cast<PPdsdtTdependentPhase*>(f31)->setScale(scale);
     TF1* Dfunction2 = new TF1("Dfunction2", f31, 0., 5.9, 23);
     Dfunction2 -> SetParameters(par);
     SetUpFunc(Dfunction2, color);
     Dfunction2 -> Draw("same");
 
     s = 53.0*53.0;
+    scale = 1.e-5;
     Functor* f53 = new PPdsdtTdependentPhase( s );
-    f53->setScale(1.);
+    static_cast<PPdsdtTdependentPhase*>(f53)->setScale(scale);
     TF1* Dfunction3 = new TF1("Dfunction3", f53, 0., 8., 23);
     Dfunction3 -> SetParameters(par);
     SetUpFunc(Dfunction3, color);
@@ -407,23 +410,26 @@ void Fit() {
     
     s = 62.5*62.5;
     Functor* f63 = new PPdsdtTdependentPhase( s );
-    f63->setScale(1.);
+    scale = 1.e-7;
+    static_cast<PPdsdtTdependentPhase*>(f63)->setScale(scale);
     TF1* Dfunction4 = new TF1("Dfunction4", f63, 0., 6.5, 23);
     Dfunction4 -> SetParameters(par);
     SetUpFunc(Dfunction4, color);
     Dfunction4 -> Draw("same");
 
     s = 44.699*44.699;
+    scale = 1.e-3;
     Functor* f44 = new PPdsdtTdependentPhase( s );
-    f44->setScale(1.);
+    static_cast<PPdsdtTdependentPhase*>(f44)->setScale(scale);
     TF1* Dfunction6 = new TF1("Dfunction6", f44, 0., 7.5, 23);
     Dfunction6 -> SetParameters(par);
     SetUpFunc(Dfunction6, color);
     Dfunction6 -> Draw("same");
 
     s = 7000.*7000.;
+    scale = 1.e-11;
     Functor* f7000 = new PPdsdtTdependentPhase( s );
-    f7000->setScale(1.);
+    static_cast<PPdsdtTdependentPhase*>(f7000)->setScale(scale);
     TF1* Dfunction7 = new TF1("Dfunction7", f7000, 0., 2.5, 23);
     Dfunction7 -> SetParameters(par);
     SetUpFunc(Dfunction7, color);
@@ -437,6 +443,8 @@ void Fit() {
 void Plot() {
     gROOT->SetStyle("Pub");
     gStyle->SetOptTitle(kFALSE);
+    gStyle->SetOptStat(kFALSE);
+    gStyle->SetOptFit(kFALSE);
 
     Fit();
 }
