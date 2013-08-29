@@ -359,8 +359,10 @@ void Fit() {
 //    ROOT::Math::GSLMinimizer* min = new ROOT::Math::GSLMinimizer( ROOT::Math::kSteepestDescent );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLSimAn", "" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiFit", "" );
+//    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer("GSLMultiMin", "SteepestDescent");
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "ConjugatePR" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "ConjugateFR" );
+//    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "BFGS" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "GSLMultiMin", "BFGS2" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "Fumili", "" );
 //    ROOT::Math::Minimizer* min = ROOT::Math::Factory::CreateMinimizer( "Minuit2", "Fumili2" );
@@ -375,33 +377,33 @@ void Fit() {
     ROOT::Math::Functor f(chi2, NPARAMS);
     min->SetFunction(f);
 
-    #include "parameters/best_f_soft_hard.par"
+    #include "parameters/best_f_soft_hard.inc"
     
     //	Secondary reggeons
     min->SetVariable(0, ipar[0].first, ipar[0].second, 0.01);     min->SetFixedVariable(0, ipar[0].first, ipar[0].second);
     min->SetVariable(1, ipar[1].first, ipar[1].second, 0.01);     min->SetFixedVariable(1, ipar[1].first, ipar[1].second);
     min->SetVariable(2, ipar[2].first, ipar[2].second, 0.01);     min->SetFixedVariable(2, ipar[2].first, ipar[2].second);
     min->SetVariable(3, ipar[3].first, ipar[3].second, 0.01);     min->SetFixedVariable(3, ipar[3].first, ipar[3].second);
-    min->SetVariable(4, ipar[4].first, ipar[4].second, 0.01);     //min->SetFixedVariable(4, ipar[4].first, ipar[4].second);
-    min->SetVariable(5, ipar[5].first, ipar[5].second, 0.01);     //min->SetFixedVariable(5, ipar[5].first, ipar[5].second);
-    min->SetVariable(6, ipar[6].first, ipar[6].second, 0.01);     //min->SetFixedVariable(6, ipar[6].first, ipar[6].second);
-    min->SetVariable(7, ipar[7].first, ipar[7].second, 0.01);     //min->SetFixedVariable(7, ipar[7].first, ipar[7].second);
+    min->SetVariable(4, ipar[4].first, ipar[4].second, 0.01);     min->SetFixedVariable(4, ipar[4].first, ipar[4].second);
+    min->SetVariable(5, ipar[5].first, ipar[5].second, 0.01);     min->SetFixedVariable(5, ipar[5].first, ipar[5].second);
+    min->SetVariable(6, ipar[6].first, ipar[6].second, 0.01);     min->SetFixedVariable(6, ipar[6].first, ipar[6].second);
+    min->SetVariable(7, ipar[7].first, ipar[7].second, 0.01);     min->SetFixedVariable(7, ipar[7].first, ipar[7].second);
     ////	Primary reggeons (Pomeron)    
     min->SetVariable(8, ipar[8].first, ipar[8].second, 0.01);       min->SetFixedVariable(8, ipar[8].first, ipar[8].second );
-    min->SetVariable(9, ipar[9].first, ipar[9].second, 0.01);       //min->SetFixedVariable(9, ipar[9].first, ipar[9].second );
-    min->SetVariable(10, ipar[10].first, ipar[10].second, 0.01);    //min->SetFixedVariable(10, ipar[10].first, ipar[10].second);
-    min->SetVariable(11, ipar[11].first, ipar[11].second, 0.01);    //min->SetFixedVariable(11, ipar[11].first, ipar[11].second);
+    min->SetVariable(9, ipar[9].first, ipar[9].second, 0.01);       min->SetFixedVariable(9, ipar[9].first, ipar[9].second );
+    min->SetVariable(10, ipar[10].first, ipar[10].second, 0.01);    min->SetFixedVariable(10, ipar[10].first, ipar[10].second);
+    min->SetVariable(11, ipar[11].first, ipar[11].second, 0.01);    min->SetFixedVariable(11, ipar[11].first, ipar[11].second);
         
-    min->SetVariable(12, ipar[12].first, ipar[12].second, 0.01);    //min->SetFixedVariable(12, ipar[12].first, ipar[12].second);
-    min->SetVariable(13, ipar[13].first, ipar[13].second, 0.01);    //min->SetFixedVariable(13, ipar[13].first, ipar[13].second);
-    min->SetVariable(14, ipar[14].first, ipar[14].second, 0.01);    //min->SetFixedVariable(14, ipar[14].first, ipar[14].second);
-    min->SetVariable(15, ipar[15].first, ipar[15].second, 0.01);    //min->SetFixedVariable(15, ipar[15].first, ipar[15].second);
+    min->SetVariable(12, ipar[12].first, ipar[12].second, 0.01);    min->SetFixedVariable(12, ipar[12].first, ipar[12].second);
+    min->SetVariable(13, ipar[13].first, ipar[13].second, 0.01);    min->SetFixedVariable(13, ipar[13].first, ipar[13].second);
+    min->SetVariable(14, ipar[14].first, ipar[14].second, 0.01);    min->SetFixedVariable(14, ipar[14].first, ipar[14].second);
+    min->SetVariable(15, ipar[15].first, ipar[15].second, 0.01);    min->SetFixedVariable(15, ipar[15].first, ipar[15].second);
         
     min->SetVariable(16, ipar[16].first, ipar[16].second, 0.01);    min->SetFixedVariable(16, ipar[16].first, ipar[16].second );
-    min->SetVariable(17, ipar[17].first, ipar[17].second, 0.01);    //min->SetFixedVariable(17, ipar[17].first, ipar[17].second );
-    min->SetVariable(18, ipar[18].first, ipar[18].second, 0.01);    //min->SetFixedVariable(18, ipar[18].first, ipar[18].second );
-    min->SetVariable(19, ipar[19].first, ipar[19].second, 0.01);    //min->SetFixedVariable(19, ipar[19].first, ipar[19].second );
-    min->SetVariable(20, ipar[20].first, ipar[20].second, 0.01);    //min->SetFixedVariable(20, ipar[20].first, ipar[20].second );
+    min->SetVariable(17, ipar[17].first, ipar[17].second, 0.01);    min->SetFixedVariable(17, ipar[17].first, ipar[17].second );
+    min->SetVariable(18, ipar[18].first, ipar[18].second, 0.01);    min->SetFixedVariable(18, ipar[18].first, ipar[18].second );
+    min->SetVariable(19, ipar[19].first, ipar[19].second, 0.01);    min->SetFixedVariable(19, ipar[19].first, ipar[19].second );
+    min->SetVariable(20, ipar[20].first, ipar[20].second, 0.01);    min->SetFixedVariable(20, ipar[20].first, ipar[20].second );
 
     TStopwatch timer;
     printf("Starting timer\n");
@@ -540,8 +542,8 @@ void Fit() {
     int ids[] = {8, 9, 10, 11, 12, 13, 14, 15, 16};
     std::vector<int> parIDs(ids, ids + sizeof (ids) / sizeof (int));
     dropper->setMinimizer(min);
-    dropper->DumpFileCSV( npoints, "XXX.csv", parIDs );
-    dropper->DumpInitParametersInclude( "XXX.par" );
+//    dropper->DumpFileCSV( npoints, "XXX.csv", parIDs );
+//    dropper->DumpInitParametersInclude( "XXX.par" );
 
     timer.Stop();
     printf("Time at the end of job = %f seconds\n", timer.CpuTime());
