@@ -93,7 +93,7 @@ void WriteParametersInfo::DumpInitParametersInclude( const std::string& fileName
     const double *par = new double[ nParams ];
     par = _minimizer->X();
     for ( int ipar = 0; ipar < nParams; ++ipar ) {
-        file<< "ipar[" << ipar << "]  = std::make_pair(\"" << _minimizer->VariableName( ipar ) << "\", "<< par[ ipar ] << ");" << std::endl;
+        file<< "ipar["<< std::setw(2) << ipar << "]  = std::make_pair(\"" << _minimizer->VariableName( ipar ) << "\", "<< par[ ipar ] << ");" << std::endl;
     }
     
     file.close();
